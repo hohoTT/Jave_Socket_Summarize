@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -49,7 +51,21 @@ public class Server {
 			// 关闭输入流
 			socket.shutdownInput();
 			
-			// 4. 关闭相关的资源
+			// 4. 获取输出流，响应客户端的请求
+			OutputStream outputStream = socket.getOutputStream();
+			
+			// 将输出流包装为一个打印流
+			PrintWriter printWriter = new PrintWriter(outputStream);
+			printWriter.write("Welcome");
+			
+			// 刷新缓存
+			printWriter.flush();
+			
+			// 5. 关闭相关的资源
+			
+			printWriter.close();
+			outputStream.close();
+			
 			bufferedReader.close();
 			inputStreamReader.close();
 			inputStream.close();
